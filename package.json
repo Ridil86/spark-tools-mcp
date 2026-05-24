@@ -1,0 +1,22 @@
+{
+  "name": "com.rockrabbit.spark-tools-mcp",
+  "version": "0.1.0",
+  "displayName": "Spark Tools MCP",
+  "description": "MCP tool surface for the Spark Game Creation Framework. Adds spark_* tools (create_entry, batch_create_from_template, generate_variations, schema, validate_database, ...) to the Unity MCP server so Claude can author and batch-edit Spark database entries directly. Requires Unity MCP (com.coplaydev.unity-mcp) and the Spark framework.",
+  "unity": "6000.3",
+  "documentationUrl": "https://github.com/rockrabbit/spark-tools-mcp",
+  "dependencies": {
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
+    "com.unity.nuget.newtonsoft-json": "3.0.2"
+  },
+  "keywords": [
+    "spark",
+    "mcp",
+    "claude",
+    "tooling",
+    "rpg"
+  ],
+  "author": {
+    "name": "Rock Rabbit Games"
+  }
+}

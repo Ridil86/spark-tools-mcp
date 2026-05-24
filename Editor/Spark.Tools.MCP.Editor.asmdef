@@ -1,0 +1,22 @@
+{
+    "name": "Spark.Tools.MCP.Editor",
+    "rootNamespace": "RockRabbit.SparkToolsMCP",
+    "references": [
+        "MCPForUnity.Editor",
+        "Spark.Core",
+        "Spark.Core.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
