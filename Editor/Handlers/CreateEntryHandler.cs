@@ -30,6 +30,27 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class CreateEntryHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("Class name of the entry type to create, e.g. 'ItemEntry' (see spark_list_entry_types).")]
+            public string entry_type { get; set; }
+
+            [ToolParameter("Internal label / asset filename source for the new entry.")]
+            public string entry_name { get; set; }
+
+            [ToolParameter("Optional object of field -> value pairs to apply beyond the default id/entryName/displayName.", Required = false)]
+            public object fields { get; set; }
+
+            [ToolParameter("Optional explicit ID; auto-generated if omitted.", Required = false)]
+            public string id { get; set; }
+
+            [ToolParameter("Optional save-path override; defaults to the PluginManifest tab path.", Required = false)]
+            public string path { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

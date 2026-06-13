@@ -37,6 +37,27 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class CreateExtensionHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("Class name of the SparkDatabaseExtensionData subclass to create (see spark_list_extension_types).")]
+            public string extension_type { get; set; }
+
+            [ToolParameter("ID of the existing entry this extension data decorates.")]
+            public string target_id { get; set; }
+
+            [ToolParameter("Optional object of field -> value pairs to apply to the new extension asset.", Required = false)]
+            public object fields { get; set; }
+
+            [ToolParameter("Optional save-path override; defaults to the PluginExtensionManifest path. Required when the type has no manifest.", Required = false)]
+            public string path { get; set; }
+
+            [ToolParameter("Overwrite an existing extension asset for this target if one exists (default false).", Required = false)]
+            public bool overwrite { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

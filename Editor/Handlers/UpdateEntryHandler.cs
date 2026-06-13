@@ -37,6 +37,18 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     {
         private const BindingFlags FieldFlags = BindingFlags.Public | BindingFlags.Instance;
 
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("ID of the entry to patch.")]
+            public string id { get; set; }
+
+            [ToolParameter("Object of {fieldName: value} pairs to apply. Numeric fields accept arithmetic expressions ('+5', '-3', '*1.1', '/2', '=10') to modify the current value; everything else is direct assignment.")]
+            public object fields { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

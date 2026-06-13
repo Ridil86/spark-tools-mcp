@@ -39,6 +39,18 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class DeleteEntryHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("ID of the entry to delete.")]
+            public string id { get; set; }
+
+            [ToolParameter("Delete even if external entries reference the target (those references become dangling). Default false.", Required = false)]
+            public bool force { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

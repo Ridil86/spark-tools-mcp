@@ -27,6 +27,15 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class FindReferencesHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("The entry id to find references to.")]
+            public string id { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

@@ -43,6 +43,30 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class GenerateVariationsHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("ID of the template entry to vary.")]
+            public string template_id { get; set; }
+
+            [ToolParameter("Name of the numeric field to interpolate across variations.")]
+            public string axis { get; set; }
+
+            [ToolParameter("Number of variations to generate (>= 1).")]
+            public int count { get; set; }
+
+            [ToolParameter("Scaling spec, e.g. {\"type\":\"linear\",\"from\":5,\"to\":50}. type is 'linear' or 'exp'.")]
+            public object scaling { get; set; }
+
+            [ToolParameter("Optional naming templates, e.g. {\"suffix\":\"_t{n}\",\"display_name\":\"{base} Tier {n}\"}. {n} is the 1-indexed position, {base} is the source displayName.", Required = false)]
+            public object naming { get; set; }
+
+            [ToolParameter("Optional object of additional field -> value overrides applied to every variation.", Required = false)]
+            public object extra_overrides { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

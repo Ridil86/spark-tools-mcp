@@ -26,6 +26,21 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class DuplicateEntryHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("ID of the entry to clone.")]
+            public string source_id { get; set; }
+
+            [ToolParameter("Internal label / asset filename source for the clone.")]
+            public string new_entry_name { get; set; }
+
+            [ToolParameter("Optional object of field -> value pairs applied to the clone after duplication.", Required = false)]
+            public object overrides { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

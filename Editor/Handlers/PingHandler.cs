@@ -28,7 +28,7 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class PingHandler
     {
-        private const string PackageVersion = "0.1.0";
+        private const string PackageVersion = "0.2.0";
 
         public static object HandleCommand(JObject @params)
         {

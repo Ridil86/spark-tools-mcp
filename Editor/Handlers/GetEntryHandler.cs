@@ -39,6 +39,16 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     {
         private const BindingFlags FieldFlags = BindingFlags.Public | BindingFlags.Instance;
 
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        // Without it the tool ships an empty schema (additionalProperties:false) and is uncallable.
+        public class Parameters
+        {
+            [ToolParameter("Entry ID as set by Spark's authoring layer (discover ids with spark_list_entries).")]
+            public string id { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

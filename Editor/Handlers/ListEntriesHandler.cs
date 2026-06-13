@@ -39,6 +39,21 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     {
         private const int DefaultLimit = 200;
 
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("Optional: restrict to one SparkDatabaseEntry subclass by name.", Required = false)]
+            public string entry_type { get; set; }
+
+            [ToolParameter("Optional: case-insensitive substring matched against id, entryName, and displayName.", Required = false)]
+            public string filter { get; set; }
+
+            [ToolParameter("Optional: cap the number of rows returned (default 200).", Required = false)]
+            public int limit { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             try

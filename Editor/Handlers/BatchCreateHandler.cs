@@ -37,6 +37,18 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class BatchCreateHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("ID of the template entry to clone for each variation.")]
+            public string template_id { get; set; }
+
+            [ToolParameter("Non-empty array of variation objects; each needs at least entry_name and may include an overrides object of field -> value pairs.")]
+            public object[] variations { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");

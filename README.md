@@ -15,7 +15,7 @@ This package is meant to live as an **embedded package** during development (und
 ```json
 {
   "dependencies": {
-    "com.rockrabbit.spark-tools-mcp": "https://github.com/rockrabbit/spark-tools-mcp.git#v0.1.0"
+    "com.rockrabbit.spark-tools-mcp": "https://github.com/rockrabbit/spark-tools-mcp.git#v0.2.0"
   }
 }
 ```
@@ -34,7 +34,7 @@ Expected response shape:
 {
   "status": "success",
   "data": {
-    "spark_tools_mcp_version": "0.1.0",
+    "spark_tools_mcp_version": "0.2.0",
     "spark_entry_count": 366,
     "plugin_manifest_count": 14,
     "plugin_manifests": [
@@ -60,6 +60,18 @@ If `spark_ping` doesn't appear in the MCP tool list, see the Troubleshooting sec
 | 5 | `spark_update_entry`, `spark_batch_update`, `spark_delete_entry` | Planned |
 
 All tools are auto-registered with Unity MCP's Python FastMCP server via the `[McpForUnityTool(AutoRegister = true)]` attribute. The whole group can be toggled on/off through `manage_tools` (group: `spark`).
+
+Each parameterized tool declares its input schema via a nested `public class Parameters` whose `[ToolParameter]`-decorated properties Unity MCP's `ToolDiscoveryService` reflects into the JSON schema. The property name is used **verbatim** as the schema key, so those properties are deliberately `snake_case` to match the keys each handler reads from `@params`.
+
+## Changelog
+
+### 0.2.0
+
+- **Fix: parameterized tools now emit their real input schemas.** Previously every tool — including those that require arguments like `spark_get_entry` and `spark_update_entry` — was registered with an empty `properties` object and `additionalProperties: false`, making them uncallable from MCP clients that validate input (any argument failed `InputValidationError`, and omitting arguments left the tool unable to know which entry to act on). Unity MCP's `ToolDiscoveryService` builds each tool's schema by reflecting over a nested `Parameters` class; the Spark handlers never declared one, so they fell back to a zero-property schema. Added a `Parameters` class to all twelve parameterized handlers. Genuinely parameterless tools (`spark_ping`, `spark_list_entry_types`, `spark_list_extension_types`, `spark_validate_database`) were already correct and are unchanged.
+
+### 0.1.0
+
+- Initial release.
 
 ## Troubleshooting
 

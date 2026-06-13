@@ -33,6 +33,15 @@ namespace RockRabbit.SparkToolsMCP.Handlers
     )]
     public static class SchemaHandler
     {
+        // MCP input schema. Unity MCP's ToolDiscoveryService reflects [ToolParameter]
+        // properties off this nested "Parameters" type; the property name becomes the
+        // JSON-schema key verbatim, so names are snake_case to match the @params reads.
+        public class Parameters
+        {
+            [ToolParameter("Type name to describe, e.g. 'ItemEntry' (a SparkDatabaseEntry subclass) or 'ItemStatsExtensionData' (a SparkDatabaseExtensionData subclass).")]
+            public string entry_type { get; set; }
+        }
+
         public static object HandleCommand(JObject @params)
         {
             if (@params == null) return McpResult.Error("Missing parameters.");
